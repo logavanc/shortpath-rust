@@ -1,2 +1,2 @@
-# shortpath-rust
+# shortpath
 Rust version of shortpath.

@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "ryanluker.vscode-coverage-gutters",
+        "pucelle.run-on-save",
+        "rust-lang.rust-analyzer"
+    ]
+}

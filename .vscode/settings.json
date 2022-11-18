@@ -1,0 +1,18 @@
+{
+    "files.exclude": {
+        "**/*.profraw": true
+    },
+    "coverage-gutters.showLineCoverage": true,
+    "coverage-gutters.showRulerCoverage": true,
+    "coverage-gutters.coverageFileNames": [
+        "coverage/tests.lcov",
+    ],
+    "runOnSave.commands": [
+        {
+            "match": ".*\\.rs$",
+            "command": "./coverage.bash",
+            "runIn": "backend",
+            "runningStatusMessage": "Generating Rust Coverage...",
+        }
+    ]
+}
