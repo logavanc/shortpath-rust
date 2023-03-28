@@ -26,7 +26,8 @@ impl Crawler {
     /// The shortest slice is at least `self.shortest` characters long, and
     /// will have the `self.indicator` character appended to it if it has been
     /// truncated.
-    fn shortest(&self, s: String, others: Vec<String>) -> String {
+    fn shortest(&self, s: &String, mut others: Vec<String>) -> String {
+        others.retain(|other| other != s);
         let mut shortest = String::new();
         's_chars_loop: for (i, c) in s.chars().enumerate() {
             if i < self.shortest {
@@ -41,7 +42,7 @@ impl Crawler {
             }
             break 's_chars_loop;
         }
-        if shortest != s {
+        if &shortest != s {
             // Add the indicator if the original string was truncated.
             shortest.push(self.indicator);
         }
@@ -50,30 +51,41 @@ impl Crawler {
 
     fn is_home(&self, path: &Path) -> bool {
         if let Some(home) = &self.home {
-            return path == home.as_path();
+            return path == home;
         }
         false
     }
 
     pub fn crawl(&self, path: &Path) -> String {
-        if self.is_home(path) {
-            return "~".to_string();
-        }
-        // if dirPath == os.Getenv("HOME") {
-        //     return "~"
-        // } else if dirPath == "/" {
-        //     return "/"
-        // } else if dirPath == "" {
-        //     return ""
-        // }
-        let mut path_string = String::new();
+        // Create a list of strings to be joined at the end.
+        let mut result: Vec<String> = Vec::new();
 
-        for component in path.components() {
-            let component_string = component.as_os_str().to_string_lossy().to_string();
-            path_string.push_str(component_string.as_str());
-            path_string.push('X');
+        let canon_path = path.canonicalize().unwrap();
+        for (i, ancestor) in canon_path.ancestors().enumerate() {
+            if self.is_home(ancestor) {
+                result.push(String::from("~"));
+                break;
+            }
+            if ancestor.as_os_str() == "/" {
+                result.push(String::from("/"));
+                break;
+            }
+            let leaf = ancestor.file_name().unwrap().to_str().unwrap();
+            if i == 0 {
+                result.push(leaf.to_string());
+                continue;
+            }
+            let parent = ancestor.parent().unwrap();
+            let others: Vec<String> = parent
+                .read_dir()
+                .unwrap()
+                .map(|entry| entry.unwrap().file_name().to_str().unwrap().to_string())
+                .collect();
+            let shortest = self.shortest(&leaf.to_string(), others);
+            result.push(shortest + "/");
         }
 
-        path_string
+        result.reverse();
+        result.join("")
     }
 }

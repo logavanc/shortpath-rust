@@ -8,11 +8,11 @@
         "coverage/tests.lcov",
     ],
     "runOnSave.commands": [
-        {
-            "match": ".*\\.rs$",
-            "command": "./coverage.bash",
-            "runIn": "backend",
-            "runningStatusMessage": "Generating Rust Coverage...",
-        }
+        // {
+        //     "match": ".*\\.rs$",
+        //     "command": "./coverage.bash",
+        //     "runIn": "backend",
+        //     "runningStatusMessage": "Generating Rust Coverage...",
+        // }
     ]
 }

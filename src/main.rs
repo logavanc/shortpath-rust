@@ -10,6 +10,7 @@ use std::env;
 fn main() {
     let args = Cli::parse();
     let crawler = Crawler::new(args.shortest, args.indicator);
-    let path = env::current_dir().unwrap();
-    println!("{}", crawler.crawl(path.as_path()));
+    let long_path = env::current_dir().unwrap();
+    let short_path = crawler.crawl(long_path.as_path());
+    println!("{}", short_path);
 }
