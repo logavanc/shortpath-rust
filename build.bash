@@ -19,11 +19,13 @@ export RUSTFLAGS="-C target-cpu=native"
 cargo build \
 	--target=x86_64-unknown-linux-musl \
 	--release
+# --out-dir is unstable
+cp ./target/x86_64-unknown-linux-musl/release/shortpath ./shortpath
 
 # Strip the binary and compress it with UPX.
-strip --strip-all target/x86_64-unknown-linux-musl/release/shortpath
-upx --best target/x86_64-unknown-linux-musl/release/shortpath
+strip --strip-all ./shortpath
+upx --best ./shortpath
+ls -lah ./shortpath
 
 # Check that the binary is statically linked.
-file target/x86_64-unknown-linux-musl/release/shortpath |
-	grep 'static.* linked'
+file ./shortpath | grep 'static.* linked'
