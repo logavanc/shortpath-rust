@@ -1,3 +1,3 @@
-# shortpath
+# ShortPath
 
-Rust version of shortpath.
+Rust version of the `shortpath` CLI utility.
