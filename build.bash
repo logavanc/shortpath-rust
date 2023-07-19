@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# Run from the script's directory.
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
 
 # Bash 'Strict Mode'
 # http://redsymbol.net/articles/unofficial-bash-strict-mode
@@ -25,7 +27,7 @@ cp ./target/x86_64-unknown-linux-musl/release/shortpath ./shortpath
 # Strip the binary and compress it with UPX.
 strip --strip-all ./shortpath
 upx --best ./shortpath
-ls -lah ./shortpath
+ls -lah "$(readlink -f ./shortpath)"
 
 # Check that the binary is statically linked.
 file ./shortpath | grep 'static.* linked'

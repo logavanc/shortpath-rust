@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
-set -e
+# Run from the script's directory.
+cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+
+# Bash 'Strict Mode'
+# http://redsymbol.net/articles/unofficial-bash-strict-mode
+# https://github.com/xwmx/bash-boilerplate#bash-strict-mode
+set -o nounset
+set -o errexit
+set -o pipefail
+IFS=$'\n\t'
 
 ################################################################################
 # See: https://blog.rng0.io/how-to-do-code-coverage-in-rust
@@ -17,10 +26,6 @@ set -e
 # Don't forget to add the /coverage/ directory to your .gitignore file,
 # and I would also recommend excluding profraw files from VS Code.
 ################################################################################
-
-# Run from the script's directory.
-cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
-
 # Setup the output directory for the lcov files.
 mkdir -p coverage
 
